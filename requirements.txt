@@ -1,0 +1,9 @@
+Django>=3.1,<4.0
+djangorestframework
+django-channels
+gunicorn
+djongo
+boto3
+django-storages
+gunicorn>=20.0
+psycopg2>=2.8
