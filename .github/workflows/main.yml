@@ -38,14 +38,14 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
       - name: Update ECS service
         env:
-          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
-          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
         run: |
           aws ecs update-service --cluster $ECS_CLUSTER --service  $ECS_SERVICE --force-new-deployment
 
       - name: Wait for service to be stable
         env:
-          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
-          ECS_SERVICE: ${{ env.ECS_SERVICE }}
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
         run: |
           aws ecs wait services-stable --cluster $ECS_CLUSTER --services $ECS_SERVICE
