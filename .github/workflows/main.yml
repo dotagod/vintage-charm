@@ -37,12 +37,15 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
       - name: Update ECS service
+        env:
+          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ env.ECS_SERVICE }}
         run: |
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
-                                --service ${{ env.ECS_SERVICE }} \
-                                --force-new-deployment
+          aws ecs update-service --cluster $ECS_CLUSTER --service  $ECS_SERVICE --force-new-deployment
 
       - name: Wait for service to be stable
+        env:
+          ECS_CLUSTER: ${{ env.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ env.ECS_SERVICE }}
         run: |
-          aws ecs wait services-stable --cluster ${{ env.ECS_CLUSTER }} \
-                                      --services ${{ env.ECS_SERVICE }}
+          aws ecs wait services-stable --cluster $ECS_CLUSTER --services $ECS_SERVICE
